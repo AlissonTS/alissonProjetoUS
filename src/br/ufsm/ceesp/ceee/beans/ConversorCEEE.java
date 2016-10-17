@@ -1,10 +1,12 @@
 package br.ufsm.ceesp.ceee.beans;
 
+import br.ufsm.ceesp.ceee.model.Chave;
 import br.ufsm.ceesp.ceee.util.GeradorData;
 import br.ufsm.ceesp.ceee.util.LeitorCSV;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class ConversorCEEE {
 
@@ -29,11 +31,23 @@ public class ConversorCEEE {
         retorno = csv.nextLine(true);
         retorno = csv.nextLine(true);
 
+        ArrayList<Chave> lista = new ArrayList<Chave>();
+
         System.out.println("Carregando Linhas...");
         do{
             if(retorno.length>0){
+                String ch = retorno[2].replaceAll("[^0-9]*", "" );
 
+                if(ch.length()>0) {
+                    Chave chave = new Chave();
 
+                    chave.setId(new Long(ch));
+                    chave.setTipoUnidade(retorno[3]);
+                    chave.setEstado(retorno[4]);
+                    chave.setTelecomandada(retorno[43]);
+
+                    lista.add(chave);
+                }
             }
             retorno = csv.nextLine(true);
         }while(retorno!=null);
@@ -42,10 +56,10 @@ public class ConversorCEEE {
         File saida = new File(f.getAbsolutePath() + ".ceee.exp");
         if(!saida.exists()) {
             saida.createNewFile();
-            System.out.println("Arquivo criado no diretório..");
+            System.out.println("Arquivo criado no diretorio..");
         }
         else{
-            System.out.println("Arquivo Já existente no diretório..");
+            System.out.println("Arquivo Ja existente no diretorio..");
         }
 
         try {
@@ -64,6 +78,10 @@ public class ConversorCEEE {
             fw.write("VER;\r\n4.0;\r\n\r\n");
 
             fw.write("CHAVE;\r\n");
+
+            for(Chave c : lista){
+                fw.write(c.getId()+"; \t"+c.getTipoUnidade()+"; \t"+c.getEstado()+"; \t"+c.getTelecomandada()+ ";\r\n");
+            }
 
             fw.write("END;\r\n");
 
