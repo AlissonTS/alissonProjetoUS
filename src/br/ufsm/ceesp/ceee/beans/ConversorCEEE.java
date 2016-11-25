@@ -80,7 +80,7 @@ public class ConversorCEEE {
             fw.write("CHAVE;\r\n");
 
             for(Chave c : lista){
-                fw.write(c.getId()+"; \t"+c.getTipoUnidade()+"; \t"+c.getEstado()+"; \t"+c.getTelecomandada()+ ";\r\n");
+                fw.write("PAL - "+c.getId()+"; \t"+c.getTipoUnidade()+"; \t"+c.getEstado()+"; \t"+c.getTelecomandada()+ ";\r\n");
             }
 
             fw.write("END;\r\n");
